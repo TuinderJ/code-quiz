@@ -46,15 +46,16 @@ h2 {
 
 button {
   background-color: blueviolet;
+  font-size: 125%;
   border-radius: 5px;
   color: white;
-  padding: 0 .25rem;
+  padding: .5rem 1.5rem;
   width: max-content;
   border: 1px solid black;
   cursor: pointer;
 }
 
-button:hover {background-color: rgb(157, 89, 220);}
+button:hover {opacity: .8;}
 
 .result {
   margin-top: .25rem;
@@ -76,3 +77,14 @@ button:hover {background-color: rgb(157, 89, 220);}
 #score {font-size: 150%;}
 
 form {gap: 1rem;}
+
+.highscores {
+  font-size: 150%;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.highscores .flex {
+  justify-content: space-between;
+  gap: 2rem;
+}

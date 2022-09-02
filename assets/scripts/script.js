@@ -7,6 +7,7 @@ let score = 0;
 
 function init() {
   displayFirstScreen();
+  document.getElementById('view-highscores').addEventListener('click', displayHighScores);
 }
 
 function displayFirstScreen() {
@@ -71,7 +72,6 @@ function newQuestion() {
   const result = document.createElement('div');
   result.classList.add('result');
   if (choseCorrectAnswer) {
-    score++;
     result.textContent = 'Correct!!';
   } else if (choseCorrectAnswer === false) {
     // deduct time
@@ -93,11 +93,11 @@ function checkAnswer(e) {
   const target = e.target;
   if (target.tagName.toLowerCase() !== 'button') {return}
   choseCorrectAnswer = (target === main.children[1].children[indexOfCorrectAnswer]);
+  if (choseCorrectAnswer) {score++;};
   newQuestion();
 }
 
 function gameOver() {
-  // score screen
   main.innerHTML = '';
   main.dataset.state = 'score';
 
@@ -110,21 +110,27 @@ function gameOver() {
 
   const form = document.createElement('form');
   form.classList.add('flex');
-  const input = document.createElement('input');
-  input.type = 'text';
-  input.id = 'new-score-name';
-  input.placeholder = 'Initals for Highscore Board...';
   const button = document.createElement('button');
-  button.id = 'score-button';
-  button.textContent = 'Submit Score';
-  form.appendChild(input);
+  if (score > 0) {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.id = 'new-score-name';
+    input.placeholder = 'Initals for Highscore Board...';
+    button.id = 'score-button';
+    button.textContent = 'Submit Score';
+    button.addEventListener('click', newHighscore);
+    form.appendChild(input);
+  } else {
+    button.id = 'view-highscores';
+    button.textContent = 'View Highscores'
+    button.addEventListener('click', viewHighscores);
+  }
   form.appendChild(button);
-  
+
   main.appendChild(h1);
   main.appendChild(div);
   main.appendChild(form);
   
-  button.addEventListener('click', newHighscore);
 }
 
 function newHighscore(e) {
@@ -132,7 +138,6 @@ function newHighscore(e) {
   const input = document.getElementById('new-score-name');
   let highscores = JSON.parse(localStorage.getItem('Highscores'));
   let newScore = { name: input.value, score: score};
-  console.log(highscores);
   if (highscores === null) {
     highscores = [newScore];
   } else {
@@ -144,9 +149,52 @@ function newHighscore(e) {
 }
 
 function displayHighScores() {
+  main.innerHTML = '';
+  main.dataset.state = 'highscores';
+  let highscores = JSON.parse(localStorage.getItem('Highscores'));
+
+  const h1 = document.createElement('h1');
+  h1.textContent = 'Highscores'
+  const ul = document.createElement('ul');
+  ul.classList.add('highscores');
+  ul.classList.add('flex');
   
+  do {
+    let highest = {score: 0};
+    let indexOfHighestScore;
+    for (let i = 0; i < highscores.length; i++) {
+      if (highscores[i].score > highest.score) {
+        highest = highscores[i];
+        indexOfHighestScore = i;
+      };
+    };
+    highscores.splice(indexOfHighestScore, 1);
+
+    // render the highest score
+    const li = document.createElement('li');
+    li.classList.add('flex');
+    const label = document.createElement('div');
+    label.textContent = `${highest.name}:`;
+    const value = document.createElement('div');
+    value.textContent = `${highest.score}`;
+
+    li.appendChild(label);
+    li.appendChild(value);
+    ul.appendChild(li);
+  } while (highscores.length > 0);
+  const button = document.createElement('button');
+  button.textContent = 'Home';
+  button.addEventListener('click', init);
+
+  main.appendChild(h1);
+  main.appendChild(ul);
+  main.appendChild(button);
+}
+
+function viewHighscores(e) {
+  e.preventDefault();
 }
 
 
-
+// displayHighScores();
 init();
