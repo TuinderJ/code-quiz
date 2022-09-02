@@ -123,7 +123,7 @@ function gameOver() {
   } else {
     button.id = 'view-highscores';
     button.textContent = 'View Highscores'
-    button.addEventListener('click', viewHighscores);
+    button.addEventListener('click', displayHighScores);
   }
   form.appendChild(button);
 
@@ -148,7 +148,8 @@ function newHighscore(e) {
   displayHighScores();
 }
 
-function displayHighScores() {
+function displayHighScores(event) {
+  event.preventDefault();
   main.innerHTML = '';
   main.dataset.state = 'highscores';
   let highscores = JSON.parse(localStorage.getItem('Highscores'));
@@ -176,7 +177,7 @@ function displayHighScores() {
     const label = document.createElement('div');
     label.textContent = `${highest.name}:`;
     const value = document.createElement('div');
-    value.textContent = `${highest.score}`;
+    value.textContent = highest.score;
 
     li.appendChild(label);
     li.appendChild(value);
