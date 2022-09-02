@@ -45,19 +45,18 @@ function newQuestion() {
   main.dataset.state = 'question';
 
   let question = getRandomQuestion();
-  if (question === undefined) {return gameOver();}
+  if (question.length === 0) {return gameOver();}
   const h2 = document.createElement('h2');
-  h2.textContent = question.question;
+  h2.textContent = question[0].question;
   
   const contentContainer = document.createElement('div');
   contentContainer.classList.add('question-screen');
   contentContainer.classList.add('flex');
   
-  const numberOfQuestions = question.multipleChoice.length;
-  for (i = 0; i < numberOfQuestions; i++) {
+  for (i = 0; i < question[0].multipleChoice.length;) {
     const button = document.createElement('button');
-    let currentOption = question.multipleChoice.splice(Math.floor(Math.random() * question.multipleChoice.length), 1);
-    if (currentOption == question.answer) {indexOfCorrectAnswer = i;};
+    let currentOption = question[0].multipleChoice.splice(Math.floor(Math.random() * question[0].multipleChoice.length), 1);
+    if (currentOption == question[0].answer) {indexOfCorrectAnswer = i;};
     button.textContent = i + 1 + '. ' + currentOption;
     contentContainer.appendChild(button);
   }
@@ -85,16 +84,7 @@ function newQuestion() {
 }
 
 function getRandomQuestion() {
-  let count = 0;
-  let keys = [];
-  for (let key of Object.entries(questions)) {
-    keys.push(key[0]);
-    count++
-  }
-  let index = keys[Math.floor(Math.random() * count)];
-  let question = questions[index];
-  delete(questions[index]);
-  return question;
+  return questions.splice(Math.floor(Math.random() * questions.length), 1);
 }
 
 function checkAnswer(e) {
@@ -106,6 +96,9 @@ function checkAnswer(e) {
 
 function gameOver() {
   // results screen
+  main.innerHTML = '';
+  main.dataset.state = 'result';
+
 }
 
 
