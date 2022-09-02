@@ -1,8 +1,9 @@
 const main = document.querySelector('main');
 let indexOfCorrectAnswer;
 let choseCorrectAnswer;
-let resultDelay = '';
+let resultDelay;
 let questions;
+let score = 0;
 
 function init() {
   displayFirstScreen();
@@ -53,7 +54,8 @@ function newQuestion() {
   contentContainer.classList.add('question-screen');
   contentContainer.classList.add('flex');
   
-  for (i = 0; i < question[0].multipleChoice.length;) {
+  const numberOfQuestions = question[0].multipleChoice.length;
+  for (i = 0; i < numberOfQuestions; i++) {
     const button = document.createElement('button');
     let currentOption = question[0].multipleChoice.splice(Math.floor(Math.random() * question[0].multipleChoice.length), 1);
     if (currentOption == question[0].answer) {indexOfCorrectAnswer = i;};
@@ -69,7 +71,7 @@ function newQuestion() {
   const result = document.createElement('div');
   result.classList.add('result');
   if (choseCorrectAnswer) {
-    // add to score
+    score++;
     result.textContent = 'Correct!!';
   } else if (choseCorrectAnswer === false) {
     // deduct time
@@ -95,10 +97,54 @@ function checkAnswer(e) {
 }
 
 function gameOver() {
-  // results screen
+  // score screen
   main.innerHTML = '';
-  main.dataset.state = 'result';
+  main.dataset.state = 'score';
 
+  const h1 = document.createElement('h1');
+  h1.textContent = 'Score';
+
+  const div = document.createElement('div');
+  div.id = 'score';
+  div.textContent = score;
+
+  const form = document.createElement('form');
+  form.classList.add('flex');
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.id = 'new-score-name';
+  input.placeholder = 'Initals for Highscore Board...';
+  const button = document.createElement('button');
+  button.id = 'score-button';
+  button.textContent = 'Submit Score';
+  form.appendChild(input);
+  form.appendChild(button);
+  
+  main.appendChild(h1);
+  main.appendChild(div);
+  main.appendChild(form);
+  
+  button.addEventListener('click', newHighscore);
+}
+
+function newHighscore(e) {
+  e.preventDefault();
+  const input = document.getElementById('new-score-name');
+  let highscores = JSON.parse(localStorage.getItem('Highscores'));
+  let newScore = { name: input.value, score: score};
+  console.log(highscores);
+  if (highscores === null) {
+    highscores = [newScore];
+  } else {
+    highscores.push(newScore);
+  }
+  localStorage.setItem('Highscores', JSON.stringify(highscores));
+
+  displayHighScores();
+}
+
+function displayHighScores() {
+  
 }
 
 

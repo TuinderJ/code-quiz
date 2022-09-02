@@ -72,3 +72,7 @@ button:hover {background-color: rgb(157, 89, 220);}
   border-radius: 5px;
   background-color: #bbb;
 }
+
+#score {font-size: 150%;}
+
+form {gap: 1rem;}
