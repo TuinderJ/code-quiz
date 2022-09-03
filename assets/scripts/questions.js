@@ -20,3 +20,5 @@ let questionsMasterList = [
     answer: 'A4'
   },
 ]
+
+sessionStorage.setItem('list', JSON.stringify(questionsMasterList));

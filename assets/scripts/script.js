@@ -1,13 +1,16 @@
 const main = document.querySelector('main');
+const timeRemainingDisplay = document.getElementById('time-remaining');
 let indexOfCorrectAnswer;
 let choseCorrectAnswer;
 let resultDelay;
 let questions;
 let score = 0;
+let timer;
+let countDown = '';
 
 function init() {
-  displayFirstScreen();
   document.getElementById('view-highscores').addEventListener('click', displayHighScores);
+  displayFirstScreen();
 }
 
 function displayFirstScreen() {
@@ -37,8 +40,8 @@ function displayFirstScreen() {
 }
 
 function startQuiz() {
-  // start timer
-  questions = questionsMasterList;
+  startTimer();
+  questions = JSON.parse(sessionStorage.getItem('list'));
   newQuestion();
 }
 
@@ -93,11 +96,25 @@ function checkAnswer(e) {
   const target = e.target;
   if (target.tagName.toLowerCase() !== 'button') {return}
   choseCorrectAnswer = (target === main.children[1].children[indexOfCorrectAnswer]);
-  if (choseCorrectAnswer) {score++;};
+  if (choseCorrectAnswer) {
+    score++;
+  } else {
+    if (timer <= 5) {
+      timer = 0;
+      clearInterval(countDown);
+      countDown = '';
+      timeRemainingDisplay.textContent = timer;
+      return gameOver();
+    } else {
+      timer = timer - 5;
+      timeRemainingDisplay.textContent = timer;
+    }
+  }
   newQuestion();
 }
 
 function gameOver() {
+  console.log('game over');
   main.innerHTML = '';
   main.dataset.state = 'score';
 
@@ -107,7 +124,8 @@ function gameOver() {
   const div = document.createElement('div');
   div.id = 'score';
   div.textContent = score;
-
+  choseCorrectAnswer = undefined;
+  
   const form = document.createElement('form');
   form.classList.add('flex');
   const button = document.createElement('button');
@@ -126,7 +144,7 @@ function gameOver() {
     button.addEventListener('click', displayHighScores);
   }
   form.appendChild(button);
-
+  
   main.appendChild(h1);
   main.appendChild(div);
   main.appendChild(form);
@@ -136,8 +154,10 @@ function gameOver() {
 function newHighscore(e) {
   e.preventDefault();
   const input = document.getElementById('new-score-name');
+  if (input.value === '') {return alert('Initials cannot be left blank.')}
   let highscores = JSON.parse(localStorage.getItem('Highscores'));
   let newScore = { name: input.value, score: score};
+  score = 0;
   if (highscores === null) {
     highscores = [newScore];
   } else {
@@ -149,17 +169,34 @@ function newHighscore(e) {
 }
 
 function displayHighScores(event) {
-  event.preventDefault();
+  if (event) {event.preventDefault();}
   main.innerHTML = '';
   main.dataset.state = 'highscores';
   let highscores = JSON.parse(localStorage.getItem('Highscores'));
-
+  
   const h1 = document.createElement('h1');
   h1.textContent = 'Highscores'
   const ul = document.createElement('ul');
   ul.classList.add('highscores');
   ul.classList.add('flex');
   
+  const div = document.createElement('div');
+  div.classList.add('flex');
+  div.style.gap = '.5rem';
+  const homeButton = document.createElement('button');
+  homeButton.textContent = 'Go Back';
+  homeButton.addEventListener('click', init);
+  const clearButton = document.createElement('button');
+  clearButton.textContent = 'Clear Highscores';
+  clearButton.addEventListener('click', clearHighscores);
+
+  div.appendChild(homeButton);
+  div.appendChild(clearButton);
+
+  main.appendChild(h1);
+  main.appendChild(ul);
+  main.appendChild(div);
+  if (highscores === null) {return};
   do {
     let highest = {score: 0};
     let indexOfHighestScore;
@@ -183,19 +220,26 @@ function displayHighScores(event) {
     li.appendChild(value);
     ul.appendChild(li);
   } while (highscores.length > 0);
-  const button = document.createElement('button');
-  button.textContent = 'Home';
-  button.addEventListener('click', init);
-
-  main.appendChild(h1);
-  main.appendChild(ul);
-  main.appendChild(button);
 }
 
-function viewHighscores(e) {
-  e.preventDefault();
+function clearHighscores() {
+  localStorage.clear();
+  displayHighScores();
 }
 
+function startTimer() {
+  if (countDown !== '') {return}
+  timer = 5;
+  timeRemainingDisplay.textContent = timer;
+  countDown = setInterval(() => {
+    timer--;
+    if (timer <= 0) {
+      clearInterval(countDown);
+      countDown = '';
+      gameOver();
+    };
+    timeRemainingDisplay.textContent = timer;
+  }, 1000);
+}
 
-// displayHighScores();
 init();
