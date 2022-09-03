@@ -168,8 +168,8 @@ function newHighscore(e) {
   displayHighScores();
 }
 
-function displayHighScores(event) {
-  if (event) {event.preventDefault();}
+function displayHighScores(e) {
+  if (e) {e.preventDefault();}
   main.innerHTML = '';
   main.dataset.state = 'highscores';
   let highscores = JSON.parse(localStorage.getItem('Highscores'));
