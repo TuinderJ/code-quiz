@@ -101,9 +101,6 @@ function checkAnswer(e) {
   } else {
     if (timer <= 5) {
       timer = 0;
-      clearInterval(countDown);
-      countDown = '';
-      timeRemainingDisplay.textContent = timer;
       return gameOver();
     } else {
       timer = timer - 5;
@@ -114,7 +111,9 @@ function checkAnswer(e) {
 }
 
 function gameOver() {
-  console.log('game over');
+  clearInterval(countDown);
+  countDown = '';
+  timeRemainingDisplay.textContent = timer;
   main.innerHTML = '';
   main.dataset.state = 'score';
 
@@ -229,13 +228,11 @@ function clearHighscores() {
 
 function startTimer() {
   if (countDown !== '') {return}
-  timer = 5;
+  timer = 60;
   timeRemainingDisplay.textContent = timer;
   countDown = setInterval(() => {
     timer--;
     if (timer <= 0) {
-      clearInterval(countDown);
-      countDown = '';
       gameOver();
     };
     timeRemainingDisplay.textContent = timer;

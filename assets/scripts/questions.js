@@ -1,23 +1,38 @@
 let questionsMasterList = [
   {
-    question: 'Test Q 1',
-    multipleChoice: ['A1', 'A2', 'A3', 'A4'],
-    answer: 'A1'
+    question: 'Which of the following is NOT a datatype in JavaScript?',
+    multipleChoice: ['String', 'Boolean', 'Undefined', 'Integer'],
+    answer: 'Integer'
   },
   {
-    question: 'Test Q 2',
-    multipleChoice: ['A1', 'A2', 'A3', 'A4'],
-    answer: 'A2'
+    question: 'Which of the following is not a comparison operator?',
+    multipleChoice: ['=', '>', '!=', '<='],
+    answer: '='
   },
   {
-    question: 'Test Q 3',
-    multipleChoice: ['A1', 'A2', 'A3', 'A4'],
-    answer: 'A3'
+    question: 'Which of the following is not a logical operator?',
+    multipleChoice: ['&&', '||', '!', '=='],
+    answer: '=='
   },
   {
-    question: 'Test Q 4',
-    multipleChoice: ['A1', 'A2', 'A3', 'A4'],
-    answer: 'A4'
+    question: 'Whis of the following is not a way to declare a variable?',
+    multipleChoice: ['var', 'let', 'const', 'dim'],
+    answer: 'dim'
+  },
+  {
+    question: 'To call the function initialize, I\'d write __________',
+    multipleChoice: ['initialize();', 'initialize;', 'initialize(event)', 'call initialize();'],
+    answer: 'initialize();'
+  },
+  {
+    question: 'What should you start all .HTML files with?',
+    multipleChoice: ['<!DOCTYPE html>', '<html>', '<head>', '<body>'],
+    answer: '<!DOCTYPE html>'
+  },
+  {
+    question: 'It\'s better to use === over == in most cases to prevent type confusion.',
+    multipleChoice: ['True', 'False'],
+    answer: 'True'
   },
 ]
 
