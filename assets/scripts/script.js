@@ -111,8 +111,7 @@ function checkAnswer(e) {
 }
 
 function gameOver() {
-  clearInterval(countDown);
-  countDown = '';
+  stopTimer();
   timeRemainingDisplay.textContent = timer;
   main.innerHTML = '';
   main.dataset.state = 'score';
@@ -169,6 +168,7 @@ function newHighscore(e) {
 
 function displayHighScores(e) {
   if (e) {e.preventDefault();}
+  stopTimer();
   main.innerHTML = '';
   main.dataset.state = 'highscores';
   let highscores = JSON.parse(localStorage.getItem('Highscores'));
@@ -237,6 +237,12 @@ function startTimer() {
     };
     timeRemainingDisplay.textContent = timer;
   }, 1000);
+}
+
+function stopTimer() {
+  if (countDown === '') {return};
+  clearInterval(countDown);
+  countDown = '';
 }
 
 init();
