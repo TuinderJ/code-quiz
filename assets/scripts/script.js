@@ -228,7 +228,7 @@ function clearHighscores() {
 
 function startTimer() {
   if (countDown !== '') {return}
-  timer = 60;
+  timer = 30;
   timeRemainingDisplay.textContent = timer;
   countDown = setInterval(() => {
     timer--;
