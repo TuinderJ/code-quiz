@@ -15,4 +15,6 @@ N/A
 
 To begin the quiz, press the "Start Quiz" button. You'll be presented with a series of multiple choice quesitons about web developement. Chose the right answer, you get a point added to your score. Chose the wrong answer, however, and you'll see your timer drop. After either your timer drops to 0 or you run out of questions, your score will be revealed to you. Write your initials down and submit your score for the leaderboard. If you want to reset the leaderboard, feel free to do so when you're viewing it.
 
+[Deployed application](https://tuinderj.github.io/code-quiz/)
+
 ![screenshot of start screen](assets/images/screenshot.png)
